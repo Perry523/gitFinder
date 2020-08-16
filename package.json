@@ -5,8 +5,9 @@
   "productName": "gitFinder",
   "author": "Perry523",
   "private": true,
+  "main": "app.vue",
   "scripts": {
-    "start": "quasar serve",
+    "start": "quasar dev",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
