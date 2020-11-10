@@ -2,7 +2,7 @@
   <q-item
     clickable
     tag="a"
-    target="_blank"
+    :target="name === 'desenvolvedor' ? '_blank' : ''"
     :href="link"
   >
     <q-item-section
@@ -14,9 +14,6 @@
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -30,7 +27,7 @@ export default {
       required: true
     },
 
-    caption: {
+    name: {
       type: String,
       default: ''
     },
