@@ -66,7 +66,7 @@ export default {
         {
           title: 'Favoritos',
           icon: 'star',
-          link: '/#/favoritos'
+          link: '#/favoritos'
         },
         {
           title: 'Conheça o desenvolvedor',

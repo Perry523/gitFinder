@@ -8,7 +8,7 @@
         type="text"
         label="Nick do usuário"
       />
-      <q-btn color="primary" label="Pesquisar" @click="searchUser" />
+      <q-btn color="primary" icon="search" @click="searchUser" />
     </div>
     <div v-if="userFound" class="d-flex column q-mt-md items-center">
       <q-avatar size="200px" font-size="52px" color="teal" text-color="white">
@@ -27,8 +27,8 @@
           class="q-ma-sm col-auto col-10 col-sm-5 col-md-3 my-card"
         >
           <div class="q-pa-sm d-flex column full-height">
-            <a class="text-h6 col"
-              ><span>{{ repository.name }}</span></a
+            <a class="text-h6 col row justify-center bb"
+              ><span class="">{{ repository.name }}</span></a
             >
             <div class="row justify-center" style="height:15px">
               <q-icon class="q-mt-xs text-orange" name="stars" />
@@ -76,5 +76,10 @@ export default {
 }
 .my-card {
   cursor: pointer;
+}
+.bb {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
 }
 </style>
