@@ -1,8 +1,8 @@
 .DS_Store
 .thumbs.db
 node_modules
-
 # Quasar core related directories
+/dist
 .quasar
 yarn.lock
 # Cordova related directories and files
