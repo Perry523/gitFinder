@@ -14,10 +14,12 @@
       <q-avatar size="200px" font-size="52px" color="teal" text-color="white">
         <img :src="userFound.avatar_url" />
       </q-avatar>
-      <p v-if="userFound.name" class="q-mt-md text-h4">
-        {{ userFound.name }}
-      </p>
-      <p v-if="userFound.bio">{{ userFound.bio }}</p>
+      <div class="q-mx-md">
+        <p v-if="userFound.name" class="q-mt-md text-h4 text-center">
+          {{ userFound.name }}
+        </p>
+        <p v-if="userFound.bio">{{ userFound.bio }}</p>
+      </div>
       <p class="text-h6">Repositorios publicos: {{ userFound.public_repos }}</p>
       <div class="row justify-center">
         <q-card
