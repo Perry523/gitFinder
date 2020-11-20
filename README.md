@@ -1,6 +1,8 @@
 # gitFinder (git-finder)
 
-A github finder made with quasar
+A PWA github finder made with quasar
+
+check it working here: https://perry523.github.io/gitFinder/#/
 
 ## Install the dependencies
 ```bash
