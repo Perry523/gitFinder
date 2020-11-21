@@ -10,29 +10,29 @@
       />
       <q-btn color="primary" icon="search" @click="searchUser" />
     </div>
-    <div v-if="userFound" class="d-flex column q-mt-md items-center">
-      <div class="relative">
+    <div v-if="userFound.id" class="d-flex column q-mt-md items-center">
+      <div class="relative-position">
         <q-avatar size="200px" font-size="52px" color="teal" text-color="white">
           <img :src="userFound.avatar_url" />
         </q-avatar>
         <q-btn
           @click="toggleFavorites"
-          class="absolute"
+          class="absolute star-button"
           label=""
+          color="yellow-1"
           flat
-          color="grey"
         >
           <template v-if="favorite">
             <q-tooltip>
               Remover dos favoritos
             </q-tooltip>
-            <q-icon size="50px" color="yellow-7" name="grade"></q-icon>
+            <q-icon size="60px" color="yellow-7" name="grade"></q-icon>
           </template>
           <template v-else>
             <q-tooltip>
               Adicionar aos favoritos
             </q-tooltip>
-            <q-icon size="50px" color="yellow-7" name="o_grade"></q-icon>
+            <q-icon size="60px" color="yellow-7" name="o_grade"></q-icon>
           </template>
         </q-btn>
       </div>
@@ -42,21 +42,34 @@
         </p>
         <p class="q-mt-lg" v-if="userFound.bio">{{ userFound.bio }}</p>
       </div>
-      <p class="text-h6 q-mb-lg">
+      <p class="text-h6 q-mb-none">
         Repositorios publicos: {{ userFound.public_repos }}
       </p>
-      <div class="q-px-lg row q-col-gutter-md">
+      <div
+        class="full-width col-4 q-mb-lg q-mt-md d-flex row flex-center content-start"
+      >
+        <q-input
+          @input="filterRepository"
+          class="repository-filter full-width q-px-lg"
+          outlined
+          type="text"
+          label="Filtrar Repositório"
+        />
+      </div>
+      <div class="q-mb-lg text-h6" v-if="repositoriesToShow.length !== repositories.length">
+        {{repositoriesToShow.length}} Resultados
+      </div>
+      <div class="full-width q-pr-md row q-col-gutter-md">
         <div
-          v-for="(repository, i) in repositories"
+          v-for="(repository, i) in repositoriesToShow"
           :key="i"
-          class="col-12 col-sm-6 col-md-4 col-lg-3 q-ma-md-none my-card"
+          class="col-12 col-sm-6 col-md-4 col-lg-3 my-card"
         >
           <q-card v-ripple @click="goToRepository(i)">
             <q-badge
               v-if="repository.language"
               color="cyan-11"
               text-color="black"
-              pill
               floating
             >
               {{ repository.language }}
@@ -100,10 +113,12 @@ export default {
   data() {
     return {
       userToFind: null,
-      repositories: null,
-      userFound: null,
+      repositories: [],
+      userFound: {},
       favorite: false,
-      confirm: false
+      confirm: false,
+      repositoryToFilter: null,
+      repositoriesToShow: []
     };
   },
   methods: {
@@ -113,13 +128,22 @@ export default {
     },
     async searchUser() {
       this.$q.loading.show();
-      this.userFound = await this.$http(`/${this.userToFind}`).then(
-        response => response.data
-      );
+      this.userFound = await this.$http(`/${this.userToFind}`)
+        .then(response => response.data)
+        .catch(() => {
+          this.$q.loading.hide();
+          this.$q.notify({
+            timeout: 1500,
+            position: "top",
+            message: "Usuário não encontrado"
+          });
+          return {};
+        });
       this.isFavorite();
       this.repositories = await this.$http(this.userFound.repos_url).then(
         response => response.data
       );
+      this.repositoriesToShow = this.repositories;
       this.$q.loading.hide();
     },
     toggleFavorites() {
@@ -150,12 +174,16 @@ export default {
       let favorite = false;
       favorites.forEach((favoriteUser, i) => {
         if (favoriteUser.id === this.userFound.id) {
-          this.userFound.index = i;
           favorite = true;
           return;
         }
       });
       this.favorite = favorite;
+    },
+    filterRepository(value) {
+      this.repositoriesToShow = this.repositories.filter(repository =>
+        repository.name.includes(value)
+      );
     }
   }
 };
@@ -163,6 +191,9 @@ export default {
 <style scoped>
 .w-50 {
   width: 50%;
+}
+.repository-filter {
+  max-width: 500px;
 }
 .my-card {
   cursor: pointer;
@@ -175,9 +206,7 @@ export default {
 .ellipsis2 {
   text-overflow: ellipsis ellipsis;
 }
-.teste {
-  overflow: hidden;
-  white-space: nowrap;
-  width: auto;
+.star-button {
+  right: -60px;
 }
 </style>

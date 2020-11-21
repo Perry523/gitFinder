@@ -60,7 +60,7 @@ export default {
         {
           title: "Home",
           icon: "house",
-          link: "#"
+          link: "#/"
         },
         {
           title: "Favoritos",

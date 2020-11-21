@@ -11,7 +11,7 @@ const routes = [
     path: '/favoritos',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Favoritos.vue') }
     ]
   },
 
